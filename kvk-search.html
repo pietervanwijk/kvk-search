@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+<!-- user input form -->
+<form class="center-form" action="javascript:;" id="userInput" onsubmit="return kvkSearch();" _lpchecked="1"><span style="font-size:20px;">Bedrijfsnaam:</span><br>
+<input class="big big-field" name="companyName" placeholder="e.g. Rijswijk Elektro"> <input class="big big-button" name="search" type="submit" value="Zoek in KvK register">&nbsp;</form>
+
+<!-- results div -->
+<div class="results" id="results" style="max-width: 400px;
+    margin: auto; height:0; overflow:scroll; margin-top:6px;"> 
+<div class="result-element" id="result0"></div>
+
+<div class="result-element" id="result1"></div>
+
+<div class="result-element" id="result2"></div>
+
+<div class="result-element" id="result3"></div>
+
+<div class="result-element" id="result4"></div>
+
+<div class="result-element" id="result5"></div>
+
+<div class="result-element" id="result6"></div>
+
+<div class="result-element" id="result7"></div>
+
+<div class="result-element" id="result8"></div>
+
+<div class="result-element" id="result9"></div>
+</div>
+
+
+<script type="text/javascript">
+	
+function kvkSearch() {
+	document.getElementById("results").style.height = "auto"; // make results div visible
+  	var x = document.getElementById("userInput"); 
+	var companyName = x.elements[0].value;
+	var xhr = new XMLHttpRequest();
+	var url = 'https://yourserver.com/kvk-search/'; // GET request to our node.js server
+	var queryParams = '?' +  encodeURIComponent('tradename') + '=' + encodeURIComponent(companyName);
+	xhr.open('GET', url + queryParams); // do the GET request
+	xhr.onreadystatechange = function () { 
+	if (this.readyState == 4) { // continue when response is received
+		var rawData = this.responseText;
+		var parsed = JSON.parse(rawData);
+		var itemsOnPage = Math.min(parsed.data.totalItems, 10); // determine size of the result list
+		for (var i = 0; i < itemsOnPage; i++) { // loop through the results and load them in the results div
+			if((parsed.data.items[i].addresses != undefined) && (parsed.data.items[i].tradeNames.currentTradeNames != undefined)) { // only continue if the result contains an address and a trade name 
+				var kvkNumberi = parsed.data.items[i].kvkNumber;
+				var companyNamei = parsed.data.items[i].tradeNames.currentTradeNames[0];
+				var addressi = parsed.data.items[i].addresses[0].street + " " + parsed.data.items[i].addresses[0].houseNumber + parsed.data.items[i].addresses[0].houseNumberAddition;
+				var postalCodei = parsed.data.items[i].addresses[0].postalCode;
+				var cityi = parsed.data.items[i].addresses[0].city;
+				document.getElementById("result" + i).innerHTML = "<div class=\"company-details\"><h4>" + companyNamei + "<\/h4><p class=\"company-text\">" + addressi + "<br>" + postalCodei + " " + cityi + "<\/p><\/div><div class=\"company-button\"><a href=\"https://www.installatiebalie.nl/visitekaartjes-2/?kvk=" +kvkNumberi + "\">Kies<\/a><\/div><hr>"; //load html into the corresponding div within the results div
+	}
+          else {
+		document.getElementById("result" + i).innerHTML = ""
+	}
+	}
+
+	
+}
+};
+xhr.send('');
+}
+
+</script>
+
+
+
+</body>
+</html>
