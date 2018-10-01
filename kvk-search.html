@@ -56,7 +56,7 @@ function kvkSearch() {
 				var addressi = parsed.data.items[i].addresses[0].street + " " + parsed.data.items[i].addresses[0].houseNumber + parsed.data.items[i].addresses[0].houseNumberAddition;
 				var postalCodei = parsed.data.items[i].addresses[0].postalCode;
 				var cityi = parsed.data.items[i].addresses[0].city;
-				document.getElementById("result" + i).innerHTML = "<div class=\"company-details\"><h4>" + companyNamei + "<\/h4><p class=\"company-text\">" + addressi + "<br>" + postalCodei + " " + cityi + "<\/p><\/div><div class=\"company-button\"><a href=\"https://www.installatiebalie.nl/visitekaartjes-2/?kvk=" +kvkNumberi + "\">Kies<\/a><\/div><hr>"; //load html into the corresponding div within the results div
+				document.getElementById("result" + i).innerHTML = "<div class=\"company-details\"><h4>" + companyNamei + "<\/h4><p class=\"company-text\">" + addressi + "<br>" + postalCodei + " " + cityi + "<\/p><\/div><div class=\"company-button\"><a href=\"NEXTPAGEPATH.COM/?kvk=" +kvkNumberi + "\">Kies<\/a><\/div><hr>"; //load html into the corresponding div within the results div, replace the url of the next page by your own path
 	}
           else {
 		document.getElementById("result" + i).innerHTML = ""
